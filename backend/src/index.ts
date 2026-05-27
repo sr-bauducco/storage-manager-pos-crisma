@@ -1,8 +1,9 @@
 import 'dotenv/config';
+import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors'; // 1. Import CORS
 import { PrismaClient } from '@prisma/client';
 import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
-import express, { Request, Response, NextFunction } from 'express';
 
 // 1. Set up the native PostgreSQL connection pool
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
@@ -13,6 +14,9 @@ const prisma = new PrismaClient({ adapter });
 
 const app = express();
 const port = 3000;
+
+app.use(cors);
+app.use(express.json());
 
 
 // --- SECURITY MIDDLEWARE ---
@@ -37,7 +41,9 @@ const requireAuth = (req: Request, res: Response, next: NextFunction) => {
 
 // Apply the middleware to all routes below this line
 app.use(requireAuth);
-//Middleware
+
+
+//Middleware for starting the routes
 app.use(express.json());
 
 // --- ROUTES ---
