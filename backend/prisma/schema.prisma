@@ -1,13 +1,46 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+// Define the lifespan of the asset
+enum AssetType {
+  DURABLE
+  CONSUMABLE
+}
+
+// The broad physical category (e.g., "Hardware", "Athletics")
+model Category {
+  id    String @id @default(uuid())
+  name  String @unique
+  items Item[]
+}
+
+// The activity group (e.g., "Night Games", "Team Building")
+model Kit {
+  id    String @id @default(uuid())
+  name  String @unique
+  items Item[]
+}
+
+// The actual physical object in the storage room
+model Item {
+  id          String     @id @default(uuid())
+  name        String
+  quantity    Int        @default(1)
+  location    String?    // Optional: Rough text note for the bin/shelf
+  assetType   AssetType? // Optional: Durable or Consumable
+  
+  // Relations (Optional to allow rapid data entry)
+  categoryId  String?
+  category    Category?  @relation(fields: [categoryId], references: [id])
+  
+  // Implicit Many-to-Many relation: An item can be in many kits, a kit has many items
+  kits        Kit[]
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
