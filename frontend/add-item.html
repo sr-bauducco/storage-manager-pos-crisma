@@ -30,8 +30,9 @@
                         <input type="number" id="quantity" required min="1" value="1">
                     </div>
                     <div class="form-group">
-                        <label for="assetType">Asset Type *</label>
-                        <select id="assetType" required>
+                        <label for="assetType">Asset Type</label>
+                        <select id="assetType">
+                            <option value="">-- None --</option>
                             <option value="DURABLE">Durable (Reusable)</option>
                             <option value="CONSUMABLE">Consumable (Used up)</option>
                         </select>
@@ -39,14 +40,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="location">Location *</label>
-                    <input type="text" id="location" required placeholder="e.g., Storage Room A - Shelf 2">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" placeholder="e.g., Storage Room A - Shelf 2">
                 </div>
 
                 <div class="form-group">
-                    <label for="categoryId">Category *</label>
-                    <select id="categoryId" required>
-                        <option value="">Loading categories...</option>
+                    <label for="categoryId">Category</label>
+                    <select id="categoryId">
+                        <option value="">-- No Category --</option>
                     </select>
                 </div>
 

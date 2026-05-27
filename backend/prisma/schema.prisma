@@ -28,19 +28,17 @@ model Kit {
 
 // The actual physical object in the storage room
 model Item {
-  id          String     @id @default(uuid())
-  name        String
-  quantity    Int        @default(1)
-  location    String?    // Optional: Rough text note for the bin/shelf
-  assetType   AssetType? // Optional: Durable or Consumable
+  id         String    @id @default(uuid())
+  name       String
+  quantity   Int       @default(1)
+  location   String?   
+  assetType  String?   
   
-  // Relations (Optional to allow rapid data entry)
-  categoryId  String?
-  category    Category?  @relation(fields: [categoryId], references: [id])
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id])
   
-  // Implicit Many-to-Many relation: An item can be in many kits, a kit has many items
-  kits        Kit[]
-
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  kits       Kit[]     // <-- Fixed line
+  
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }

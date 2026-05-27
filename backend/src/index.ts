@@ -48,7 +48,7 @@ app.use(requireAuth);
 app.use(express.json());
 
 // --- ROUTES ---
-// 1. CREATE Item(s) - Upgraded to handle bulk uploads
+// 1. CREATE Item(s) - Upgraded with bulletproof null-handling
 app.post('/api/items', async (req: Request, res: Response) => {
   try {
     // SCENARIO A: The user sent an array of multiple items
@@ -57,12 +57,12 @@ app.post('/api/items', async (req: Request, res: Response) => {
         data: req.body.map(item => ({
           name: item.name,
           quantity: item.quantity || 1,
-          location: item.location,
-          assetType: item.assetType,
-          categoryId: item.categoryId
+          // Convert empty strings to undefined so Prisma ignores them
+          location: item.location === "" ? undefined : item.location,
+          assetType: item.assetType === "" ? undefined : item.assetType,
+          categoryId: item.categoryId === "" ? undefined : item.categoryId
         }))
       });
-      // createMany returns a count, not the items themselves
       res.status(201).json({ message: `Successfully stored ${newItems.count} items!` });
       return; 
     }
@@ -73,15 +73,15 @@ app.post('/api/items', async (req: Request, res: Response) => {
       data: {
         name,
         quantity: quantity || 1,
-        location,
-        assetType,
-        categoryId
+        // Convert empty strings to undefined so Prisma ignores them
+        location: location === "" ? undefined : location,
+        assetType: assetType === "" ? undefined : assetType,
+        categoryId: categoryId === "" ? undefined : categoryId
       },
     });
 
     res.status(201).json(newItem);
   } catch (error) {
-    // If it fails, we still log the REAL error to the terminal for debugging
     console.error("🔥 DATABASE ERROR:", error);
     res.status(500).json({ error: 'Failed to create item(s)' });
   }
