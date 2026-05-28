@@ -147,3 +147,42 @@ input, select {
 }
 .success { color: #27ae60; font-weight: bold; margin-top: 1rem; }
 .error { color: #e74c3c; font-weight: bold; margin-top: 1rem; }
+
+/* --- CARD ACTIONS --- */
+.card-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.card-actions button {
+    flex: 1;
+    padding: 0.4rem;
+    font-size: 0.9rem;
+}
+
+.edit-btn {
+    background-color: #f39c12;
+}
+
+.edit-btn:hover {
+    background-color: #d68910;
+}
+
+.delete-btn {
+    background-color: #c0392b;
+}
+
+.delete-btn:hover {
+    background-color: #922b21;
+}
+
+.qty-badge {
+    background-color: #3498db;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: bold;
+}   

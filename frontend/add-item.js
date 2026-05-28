@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'http://147.15.45.97:3000/api';
 const form = document.getElementById('addItemForm');
 const categorySelect = document.getElementById('categoryId');
 const statusMessage = document.getElementById('statusMessage');
