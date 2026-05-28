@@ -111,7 +111,7 @@ app.put('/api/items/:id', async (req: Request, res: Response) => {
     const { name, quantity, location, assetType, categoryId } = req.body;
 
     const updatedItem = await prisma.item.update({
-      where: { id },
+      where: { id: id as string },
       data: { name, quantity, location, assetType, categoryId },
     });
 
@@ -128,7 +128,7 @@ app.delete('/api/items/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     
     await prisma.item.delete({
-      where: { id },
+      where: { id: id as string },
     });
     
     res.json({ message: 'Item deleted successfully' });
