@@ -1,4 +1,4 @@
-const API_URL = 'http://147.15.45.97:3000/api/items';
+const API_URL = 'http://localhost:3000/api/items';
 const grid = document.getElementById('inventoryGrid');
 const searchInput = document.getElementById('searchInput');
 
