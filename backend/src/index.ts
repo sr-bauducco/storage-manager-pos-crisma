@@ -188,6 +188,78 @@ app.get('/api/kits', async (req: Request, res: Response) => {
   }
 });
 
+// ==========================================
+// ROTAS DE AÇÕES EM LOTE (BULK ACTIONS)
+// ==========================================
+
+// Rota 1: Excluir vários itens de uma vez
+app.post('/api/items/bulk-delete', async (req, res) => {
+    // 1. Verificação de Segurança (A mesma que você já usa)
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+    
+    // Substitua 'SUA_SENHA_AQUI' pela senha real que você configurou no backend
+    if (token !== 'admin') { 
+        return res.status(401).json({ error: 'Não autorizado' });
+    }
+
+    const { ids } = req.body;
+
+    // Garante que o frontend enviou um array válido
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+        return res.status(400).json({ error: 'Nenhum item selecionado.' });
+    }
+
+    try {
+        // O poder do Prisma: deleta todos onde o ID estiver "dentro" (in) do array
+        const result = await prisma.item.deleteMany({
+            where: {
+                id: { in: ids }
+            }
+        });
+        
+        res.json({ message: `${result.count} itens excluídos com sucesso.` });
+    } catch (error) {
+        console.error('Erro no Bulk Delete:', error);
+        res.status(500).json({ error: 'Erro interno ao excluir itens.' });
+    }
+});
+
+
+// Rota 2: Atribuir vários itens a um Kit
+app.patch('/api/items/bulk-kit', async (req, res) => {
+    // 1. Verificação de Segurança
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+    
+    if (token !== 'admin') { 
+        return res.status(401).json({ error: 'Não autorizado' });
+    }
+
+    const { ids, kitName } = req.body;
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+        return res.status(400).json({ error: 'Nenhum item selecionado.' });
+    }
+
+    try {
+        // Atualiza todos os IDs fornecidos com o novo nome do kit
+        const result = await prisma.item.updateMany({
+            where: {
+                id: { in: ids }
+            },
+            data: {
+                kit: kitName || null // Se o kitName for vazio, ele "desvincula" os itens do kit
+            }
+        });
+        
+        res.json({ message: `${result.count} itens atualizados com sucesso.` });
+    } catch (error) {
+        console.error('Erro no Bulk Kit:', error);
+        res.status(500).json({ error: 'Erro interno ao atualizar os kits.' });
+    }
+});
+
 // Health check
 app.get('/api/health', (req: Request, res: Response) => {
   res.json({ status: 'success', message: 'API is connected to the database!' });
