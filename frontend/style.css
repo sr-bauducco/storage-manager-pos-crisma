@@ -239,3 +239,57 @@ main {
 
 .success { color: #059669; }
 .error { color: #dc2626; }
+
+Agora vamos dar vida a isso no seu navegador. Precisamos de três coisas: uma caixa de seleção (checkbox) em cada card, uma "Barra de Ações" que aparece quando você seleciona algo, e a lógica do JavaScript para enviar a lista.
+
+Aqui estão as alterações exatas para os seus três arquivos do painel principal.
+1. Atualizar o CSS (style.css)
+
+Adicione estas regras no final do seu arquivo style.css. Elas vão estilizar os novos checkboxes e criar uma barra elegante que "flutua" na parte inferior da tela quando você seleciona os itens.
+CSS
+
+/* --- BULK ACTIONS (AÇÕES EM LOTE) --- */
+
+/* Posiciona o checkbox no canto superior direito do card */
+.card {
+    position: relative; /* Necessário para o checkbox funcionar */
+}
+
+.card-checkbox {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    transform: scale(1.5);
+    cursor: pointer;
+    accent-color: #2563eb;
+}
+
+/* Barra de ações flutuante que aparece na parte inferior */
+.bulk-actions-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1e293b;
+    color: white;
+    padding: 15px 20px;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.2);
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.bulk-actions-bar input {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: none;
+    font-size: 0.95rem;
+}
+
+.btn-primary { background-color: #3b82f6; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+.btn-primary:hover { background-color: #2563eb; }
+
+.btn-danger { background-color: #ef4444; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+.btn-danger:hover { background-color: #dc2626; }

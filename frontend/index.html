@@ -14,7 +14,6 @@
             <input type="text" id="searchInput" placeholder="Pesquisar no estoque...">
             
             <button onclick="window.location.href='add-item.html'" style="background-color: #27ae60;">+ Novo Item</button>
-
         </div>
     </header>
 
@@ -27,6 +26,17 @@
         
         <div class="grid-container" id="inventoryGrid"></div>
     </main>
+
+    <div id="bulkActionsBar" class="bulk-actions-bar" style="display: none;">
+        <span id="selectedCount" style="font-weight: bold; margin-right: 15px;">0 selecionados</span>
+        
+        <input type="password" id="bulkAdminToken" placeholder="Senha do Admin" required>
+        
+        <input type="text" id="bulkKitName" placeholder="Nome do Novo Kit">
+        <button class="btn-primary" onclick="assignKitToSelected()">📦 Agrupar em Kit</button>
+        
+        <button class="btn-danger" onclick="deleteSelected()">🗑️ Excluir</button>
+    </div>
 
     <script src="app.js"></script>
 </body>
