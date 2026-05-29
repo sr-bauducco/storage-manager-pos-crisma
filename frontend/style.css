@@ -28,7 +28,7 @@ header h1 {
     gap: 1rem;
 }
 
-input[type="text"] {
+header input[type="text"] {
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 4px;
@@ -36,7 +36,7 @@ input[type="text"] {
     width: 250px;
 }
 
-button {
+header button {
     background-color: #e74c3c;
     color: white;
     border: none;
@@ -47,11 +47,11 @@ button {
     transition: background-color 0.2s;
 }
 
-button:hover {
+header button:hover {
     background-color: #c0392b;
 }
 
-/* --- MAIN GRID --- */
+/* --- MAIN GRID & DASHBOARD --- */
 main {
     padding: 2rem;
     max-width: 1200px;
@@ -64,7 +64,7 @@ main {
     gap: 1.5rem;
 }
 
-/* --- CARDS --- */
+/* --- CARDS (INVENTORY ITEMS) --- */
 .card {
     background: white;
     border-radius: 8px;
@@ -83,6 +83,9 @@ main {
     margin-top: 0;
     color: #2c3e50;
     font-size: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .card p {
@@ -96,59 +99,34 @@ main {
     margin: 1rem 0;
 }
 
+/* Badges para as tags do card */
 .card small {
     display: inline-block;
     background-color: #ecf0f1;
-    padding: 0.2rem 0.5rem;
+    padding: 0.3rem 0.6rem;
     border-radius: 4px;
     margin-right: 0.5rem;
     margin-bottom: 0.5rem;
     color: #7f8c8d;
     font-weight: 500;
+    font-size: 0.85rem;
 }
 
-/* --- FORM STYLES --- */
-.form-container {
-    max-width: 600px;
-    margin: 0 auto;
-}
-.form-group {
-    margin-bottom: 1rem;
-    display: flex;
-    flex-direction: column;
-}
-.form-group-row {
-    display: flex;
-    gap: 1rem;
-}
-.form-group-row .form-group {
-    flex: 1;
-}
-label {
+.qty-badge {
+    background-color: #3498db;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.9rem;
     font-weight: bold;
-    margin-bottom: 0.5rem;
-    color: #2c3e50;
 }
-input, select {
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-}
-.submit-btn {
-    width: 100%;
-    padding: 1rem;
-    font-size: 1.1rem;
-    margin-top: 1rem;
-    background-color: #27ae60;
-}
-.submit-btn:hover {
-    background-color: #2ecc71;
-}
-.success { color: #27ae60; font-weight: bold; margin-top: 1rem; }
-.error { color: #e74c3c; font-weight: bold; margin-top: 1rem; }
 
-/* --- CARD ACTIONS --- */
+.kit-badge {
+    background-color: #9b59b6;
+    color: white;
+}
+
+/* --- CARD ACTIONS (EDIT/DELETE) --- */
 .card-actions {
     display: flex;
     gap: 0.5rem;
@@ -159,30 +137,105 @@ input, select {
 
 .card-actions button {
     flex: 1;
-    padding: 0.4rem;
+    padding: 0.5rem;
     font-size: 0.9rem;
-}
-
-.edit-btn {
-    background-color: #f39c12;
-}
-
-.edit-btn:hover {
-    background-color: #d68910;
-}
-
-.delete-btn {
-    background-color: #c0392b;
-}
-
-.delete-btn:hover {
-    background-color: #922b21;
-}
-
-.qty-badge {
-    background-color: #3498db;
+    border: none;
+    border-radius: 4px;
     color: white;
-    padding: 2px 8px;
-    border-radius: 12px;
+    cursor: pointer;
     font-weight: bold;
-}   
+    transition: 0.2s;
+}
+
+.edit-btn { background-color: #f39c12; }
+.edit-btn:hover { background-color: #d68910; }
+
+.delete-btn { background-color: #c0392b; }
+.delete-btn:hover { background-color: #922b21; }
+
+/* --- FORM STYLES (ADD ITEM PAGE) --- */
+.form-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    max-width: 500px;
+    margin: 40px auto; /* Centraliza a caixa na tela */
+    border-top: 5px solid #2563eb;
+}
+
+.form-container h3 {
+    margin-top: 0;
+    color: #1e293b;
+    margin-bottom: 24px;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.input-group {
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #334155;
+    font-size: 0.95rem;
+}
+
+.required {
+    color: #ef4444; /* Asterisco vermelho para campos obrigatórios */
+    margin-left: 2px;
+}
+
+/* Estiliza tanto inputs de texto quanto o dropdown (select) */
+.input-group input, 
+.input-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    color: #1e293b;
+    background-color: #f8fafc;
+    transition: all 0.2s;
+}
+
+.input-group input:focus, 
+.input-group select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background-color: #1d4ed8;
+}
+
+/* --- STATUS MESSAGES --- */
+#statusMessage {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+.success { color: #059669; }
+.error { color: #dc2626; }

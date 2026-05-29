@@ -1,24 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camp Storage Manager</title>
+    <title>Painel Principal - Estoque</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <header>
-        <h1>Camp Storage Manager</h1>
+        <h1>Gerenciador de Estoque</h1>
         <div class="controls">
-            <input type="text" id="searchInput" placeholdepm2 delete allr="Search inventory...">
-            <button id="adminLoginBtn" onclick="window.location.href='add-item.html'">Admin Login</button>
+            <input type="text" id="searchInput" placeholder="Pesquisar no estoque...">
+            
+            <button onclick="window.location.href='add-item.html'" style="background-color: #27ae60;">+ Novo Item</button>
+
         </div>
     </header>
 
     <main>
-        <div id="inventoryGrid" class="grid-container">
-            <p>Loading inventory...</p>
+        <h2 style="color: #1e293b; text-align: center; margin-bottom: 30px;">Inventário Atual</h2>
+        
+        <div id="loadingText" style="text-align: center; color: #64748b; font-weight: bold;">
+            Carregando estoque do servidor...
         </div>
+        
+        <div class="grid-container" id="inventoryGrid"></div>
     </main>
 
     <script src="app.js"></script>

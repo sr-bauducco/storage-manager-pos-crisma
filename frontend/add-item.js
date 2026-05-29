@@ -1,70 +1,76 @@
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'http://localhost:3000/api'; // Apontando para o seu backend na Oracle Cloud
 const form = document.getElementById('addItemForm');
 const categorySelect = document.getElementById('categoryId');
 const statusMessage = document.getElementById('statusMessage');
 
-// 1. Fetch Categories when the page loads
+// 1. Busca as Categorias quando a página carrega
 async function loadCategories() {
     try {
         const response = await fetch(`${API_URL}/categories`);
         const categories = await response.json();
         
-        categorySelect.innerHTML = '<option value="">-- Select a Category --</option>';
+        // Traduzido e deixando claro que é opcional
+        categorySelect.innerHTML = '<option value="">-- Selecione uma Categoria (Opcional) --</option>';
         categories.forEach(cat => {
             const option = document.createElement('option');
-            option.value = cat.id; // We send the ID to Prisma
-            option.textContent = cat.name; // We show the name to the user
+            option.value = cat.id; // Envia o ID para o Prisma
+            option.textContent = cat.name; // Mostra o nome para o usuário
             categorySelect.appendChild(option);
         });
     } catch (error) {
-        categorySelect.innerHTML = '<option value="">Error loading categories</option>';
+        categorySelect.innerHTML = '<option value="">Erro ao carregar categorias</option>';
     }
 }
 
-// 2. Handle Form Submission
+// 2. Lida com o Envio do Formulário
 form.addEventListener('submit', async (e) => {
-    e.preventDefault(); // Stop the page from refreshing
-    statusMessage.textContent = 'Saving...';
+    e.preventDefault(); // Impede a página de recarregar
+    statusMessage.textContent = 'Salvando...';
     statusMessage.className = '';
 
-    // Gather the data
-    const itemData = {
-        name: document.getElementById('name').value,
-        quantity: parseInt(document.getElementById('quantity').value),
-        location: document.getElementById('location').value,
-        assetType: document.getElementById('assetType').value,
-        categoryId: document.getElementById('categoryId').value
-    };
+    // Coleta os valores dos campos opcionais
+    const categoryValue = document.getElementById('categoryId').value;
+    const kitValue = document.getElementById('kit').value.trim();
 
-    const token = document.getElementById('adminToken').value;
+    // Coleta o token de admin (se o elemento existir no HTML)
+    const tokenInput = document.getElementById('adminToken');
+    const token = tokenInput ? tokenInput.value : '';
+
+    // Monta os dados
+    const itemData = {
+        name: document.getElementById('name').value.trim(),
+        quantity: parseInt(document.getElementById('quantity').value, 10),
+        categoryId: categoryValue ? categoryValue : null, // Envia nulo se estiver vazio
+        kit: kitValue ? kitValue : null // Envia nulo se estiver vazio
+    };
 
     try {
         const response = await fetch(`${API_URL}/items`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // Injecting your secret key
+                'Authorization': `Bearer ${token}` // Injeta a chave de segurança
             },
             body: JSON.stringify(itemData)
         });
 
         if (response.ok) {
-            statusMessage.textContent = '✅ Item added successfully!';
+            statusMessage.textContent = '✅ Item adicionado com sucesso!';
             statusMessage.className = 'success';
-            form.reset(); // Clear the form
-            loadCategories(); // Reload just in case
+            form.reset(); // Limpa o formulário
+            loadCategories(); // Recarrega as categorias por precaução
         } else if (response.status === 401) {
-            statusMessage.textContent = '❌ Unauthorized: Incorrect Admin Password.';
+            statusMessage.textContent = '❌ Não autorizado: Senha de Admin incorreta.';
             statusMessage.className = 'error';
         } else {
-            statusMessage.textContent = '❌ Failed to add item. Check server logs.';
+            statusMessage.textContent = '❌ Falha ao adicionar item. Verifique os logs do servidor.';
             statusMessage.className = 'error';
         }
     } catch (error) {
-        statusMessage.textContent = '❌ Network error. Is the backend running?';
+        statusMessage.textContent = '❌ Erro de rede. O backend está rodando?';
         statusMessage.className = 'error';
     }
 });
 
-// Start the app
+// Inicia o aplicativo
 loadCategories();
